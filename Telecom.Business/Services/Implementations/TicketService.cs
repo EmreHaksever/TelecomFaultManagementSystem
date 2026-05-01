@@ -59,9 +59,18 @@ public class TicketService : ITicketService
         return _mapper.Map<TicketResponseDto>(ticket);
     }
 
-    public async Task<IEnumerable<TicketResponseDto>> GetAllTicketsAsync()
+    public async Task<IEnumerable<TicketResponseDto>> GetAllTicketsAsync(Guid currentUserId, string role)
     {
         var tickets = await _ticketRepository.GetAllAsync();
+
+        // Teknisyen ise sadece kendisine atanan biletleri görsün
+        if (role == "Technician")
+        {
+            var techTickets = tickets.Where(t => t.AssignedTechnicianId == currentUserId);
+            return _mapper.Map<IEnumerable<TicketResponseDto>>(techTickets);
+        }
+
+        // Admin veya Agent ise tüm biletleri görsün
         return _mapper.Map<IEnumerable<TicketResponseDto>>(tickets);
     }
 
@@ -71,6 +80,8 @@ public class TicketService : ITicketService
         if (ticket == null) return false;
 
         ticket.AssignedTechnicianId = dto.TechnicianId;
+        ticket.Status = TicketStatus.InProgress; // Atandığında durum otomatik güncellenir
+        
         _ticketRepository.Update(ticket);
 
         var auditLog = new AuditLog
@@ -78,7 +89,7 @@ public class TicketService : ITicketService
             UserId = currentUserId,
             TicketId = ticket.Id,
             ActionType = "TechnicianAssigned",
-            Details = $"Technician {dto.TechnicianId} assigned to ticket."
+            Details = $"Technician {dto.TechnicianId} assigned. Status updated to InProgress."
         };
         await _auditLogRepository.AddAsync(auditLog);
 

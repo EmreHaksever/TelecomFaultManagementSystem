@@ -30,11 +30,18 @@ public class TicketsController : ControllerBase
         return Ok(ticket);
     }
 
-    // Herhangi bir giriş yapmış kullanıcı tüm biletleri görebilir.
+    // Listeleme: Teknisyen sadece kendisininkini, Agent/Admin hepsini görür.
     [HttpGet]
     public async Task<IActionResult> GetAllTickets()
     {
-        var tickets = await _ticketService.GetAllTicketsAsync();
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userRole = User.FindFirstValue(ClaimTypes.Role);
+
+        if (string.IsNullOrEmpty(userIdString) || string.IsNullOrEmpty(userRole))
+            return Unauthorized();
+
+        var currentUserId = Guid.Parse(userIdString);
+        var tickets = await _ticketService.GetAllTicketsAsync(currentUserId, userRole);
         return Ok(tickets);
     }
 

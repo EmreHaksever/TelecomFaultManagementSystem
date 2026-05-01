@@ -9,7 +9,7 @@ public interface ITicketService
 {
     Task<TicketResponseDto> CreateTicketAsync(CreateTicketDto dto, Guid currentUserId);
     Task<TicketResponseDto?> GetTicketByIdAsync(Guid id);
-    Task<IEnumerable<TicketResponseDto>> GetAllTicketsAsync();
+    Task<IEnumerable<TicketResponseDto>> GetAllTicketsAsync(Guid currentUserId, string role);
     Task<bool> AssignTechnicianAsync(AssignTechnicianDto dto, Guid currentUserId);
     Task<bool> ChangeStatusAsync(ChangeTicketStatusDto dto, Guid currentUserId);
 }

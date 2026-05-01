@@ -122,6 +122,7 @@ public class TicketServiceTests
         // Assert
         Assert.True(result);
         Assert.Equal(dto.TechnicianId, ticket.AssignedTechnicianId);
+        Assert.Equal(TicketStatus.InProgress, ticket.Status);
 
         _mockTicketRepo.Verify(r => r.Update(ticket), Times.Once);
         _mockAuditLogRepo.Verify(r => r.AddAsync(It.Is<AuditLog>(a => a.ActionType == "TechnicianAssigned" && a.UserId == currentUserId)), Times.Once);
