@@ -1,6 +1,6 @@
 @model Telecom.UI.Models.TicketViewModel
 @{
-    ViewData["Title"] = "Ticket Details";
+    ViewData["Title"] = "Talep Detayları";
     var isResolved = Model.Status == 3;
     var isInProgress = Model.Status == 2;
     var isOpen = Model.Status == 1;
@@ -9,12 +9,12 @@
 <div class="container mt-5">
     <div class="glass-card p-5 animate-fade-in">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="neon-text">Ticket Details</h2>
+            <h2 class="neon-text">Talep Detayları</h2>
             <div>
-                @if(isOpen)      { <span class="badge bg-success p-2 fs-6">Open</span> }
-                else if(isInProgress) { <span class="badge bg-warning text-dark p-2 fs-6">In Progress</span> }
-                else if(isResolved) { <span class="badge bg-primary p-2 fs-6">Resolved</span> }
-                else { <span class="badge bg-secondary p-2 fs-6">Closed</span> }
+                @if(isOpen)      { <span class="badge bg-success p-2 fs-6">Açık</span> }
+                else if(isInProgress) { <span class="badge bg-warning text-dark p-2 fs-6">İşlemde</span> }
+                else if(isResolved) { <span class="badge bg-primary p-2 fs-6">Çözüldü</span> }
+                else { <span class="badge bg-secondary p-2 fs-6">Kapalı</span> }
             </div>
         </div>
         
@@ -31,34 +31,34 @@
                 @if (!string.IsNullOrEmpty(Model.ResolutionDetail))
                 {
                     <div class="mt-4 p-3 rounded" style="background: rgba(25, 135, 84, 0.15); border: 1px solid rgba(25, 135, 84, 0.4);">
-                        <label class="text-success small fw-bold d-block mb-2"><i class="bi bi-check2-circle me-1"></i>Resolution Detail</label>
+                        <label class="text-success small fw-bold d-block mb-2"><i class="bi bi-check2-circle me-1"></i>Çözüm Detayı</label>
                         <p class="text-light mb-0" style="white-space: pre-line;">@Model.ResolutionDetail</p>
                     </div>
                 }
             </div>
             <div class="col-md-4 border-start border-secondary border-opacity-25 ps-4">
                 <div class="mb-4">
-                    <label class="text-muted small d-block">Customer No</label>
+                    <label class="text-muted small d-block">Müşteri No</label>
                     <span class="text-light fw-bold">@Model.CustomerNo</span>
                 </div>
                 <div class="mb-4">
-                    <label class="text-muted small d-block">Priority</label>
-                    @if(Model.Priority == 4)      { <span class="badge bg-danger">Critical</span> }
-                    else if(Model.Priority == 3)  { <span class="badge bg-warning text-dark">High</span> }
-                    else if(Model.Priority == 2)  { <span class="badge bg-info text-dark">Medium</span> }
-                    else                          { <span class="badge bg-secondary">Low</span> }
+                    <label class="text-muted small d-block">Öncelik</label>
+                    @if(Model.Priority == 4)      { <span class="badge bg-danger">Kritik</span> }
+                    else if(Model.Priority == 3)  { <span class="badge bg-warning text-dark">Yüksek</span> }
+                    else if(Model.Priority == 2)  { <span class="badge bg-info text-dark">Orta</span> }
+                    else                          { <span class="badge bg-secondary">Düşük</span> }
                 </div>
                 <div class="mb-4">
-                    <label class="text-muted small d-block">SLA Due Date</label>
-                    <span class="text-light">@(Model.SLADueDate?.ToString("f") ?? "Not Set")</span>
+                    <label class="text-muted small d-block">SLA Bitiş Tarihi</label>
+                    <span class="text-light">@(Model.SLADueDate?.ToString("f") ?? "Ayarlanmadı")</span>
                 </div>
                 <div class="mb-4">
-                    <label class="text-muted small d-block">Created At</label>
+                    <label class="text-muted small d-block">Oluşturulma Tarihi</label>
                     <span class="text-muted small">@Model.CreatedAt.ToString("f")</span>
                 </div>
                 <div class="mb-4">
-                    <label class="text-muted small d-block">Assigned Technician</label>
-                    <span class="text-info fw-bold">@(Model.AssignedTechnicianName ?? "Not Assigned")</span>
+                    <label class="text-muted small d-block">Atanan Teknisyen</label>
+                    <span class="text-info fw-bold">@(Model.AssignedTechnicianName ?? "Atanmadı")</span>
                 </div>
             </div>
         </div>
@@ -68,17 +68,17 @@
             @if (isOpen)
             {
                 <a asp-action="Assign" asp-route-id="@Model.Id" class="btn btn-primary px-4">
-                    <i class="bi bi-person-plus me-2"></i>Assign Technician
+                    <i class="bi bi-person-plus me-2"></i>Teknisyen Ata
                 </a>
             }
             @if (isInProgress)
             {
                 <a asp-action="Resolve" asp-route-id="@Model.Id" class="btn btn-success px-4">
-                    <i class="bi bi-check2-all me-2"></i>Mark as Resolved
+                    <i class="bi bi-check2-all me-2"></i>Çözüldü Olarak İşaretle
                 </a>
             }
             <a asp-action="Index" class="btn btn-outline-light px-4">
-                Back to List
+                Listeye Dön
             </a>
         </div>
     </div>

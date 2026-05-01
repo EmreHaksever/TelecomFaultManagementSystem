@@ -66,7 +66,7 @@ public class AuthController : Controller
             return RedirectToAction("Index", "Ticket");
         }
 
-        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+        ModelState.AddModelError(string.Empty, "Geçersiz giriş denemesi.");
         return View(model);
     }
     

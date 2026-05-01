@@ -1,6 +1,6 @@
 @model IEnumerable<Telecom.UI.Models.TicketViewModel>
 @{
-    ViewData["Title"] = "Active Tickets";
+    ViewData["Title"] = "Aktif Kayıtlar";
     // Rolü cookie'den okuyoruz çünkü UI tarafı JWT'yi çözmüyor
     var userRole = Context.Request.Cookies["UserRole"] ?? "";
     var isAgent  = userRole == "Agent" || userRole == "Admin";
@@ -9,11 +9,11 @@
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="neon-text">Active Fault Tickets</h2>
+        <h2 class="neon-text">Aktif Arıza Kayıtları</h2>
         @* 🟢 FIX: "New Ticket" sadece Agent/Admin için görünür *@
         @if (isAgent)
         {
-            <a asp-action="Create" class="btn btn-neon-outline"><i class="bi bi-plus-lg"></i> New Ticket</a>
+            <a asp-action="Create" class="btn btn-neon-outline"><i class="bi bi-plus-lg"></i> Yeni Kayıt</a>
         }
     </div>
 
@@ -22,13 +22,13 @@
             <table class="table glass-table">
                 <thead>
                     <tr>
-                        <th>Customer No</th>
-                        <th>Title</th>
-                        <th>Priority</th>
-                        <th>Status</th>
-                        <th>SLA Due</th>
-                        <th>Assigned To</th>
-                        <th>Actions</th>
+                        <th>Müşteri No</th>
+                        <th>Başlık</th>
+                        <th>Öncelik</th>
+                        <th>Durum</th>
+                        <th>SLA Süresi</th>
+                        <th>Atanan Kişi</th>
+                        <th>İşlemler</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,34 +39,34 @@
                             <td class="text-light fw-bold">@item.Title</td>
                             <td>
                                 @* 🟢 FIX: Her öncelik ayrı badge *@
-                                @if(item.Priority == 4)      { <span class="badge bg-danger">Critical</span> }
-                                else if(item.Priority == 3)  { <span class="badge bg-warning text-dark">High</span> }
-                                else if(item.Priority == 2)  { <span class="badge bg-info text-dark">Medium</span> }
-                                else                         { <span class="badge bg-secondary">Low</span> }
+                                @if(item.Priority == 4)      { <span class="badge bg-danger">Kritik</span> }
+                                else if(item.Priority == 3)  { <span class="badge bg-warning text-dark">Yüksek</span> }
+                                else if(item.Priority == 2)  { <span class="badge bg-info text-dark">Orta</span> }
+                                else                         { <span class="badge bg-secondary">Düşük</span> }
                             </td>
                             <td>
-                                @if(item.Status == 1) { <span class="badge bg-success">Open</span> }
-                                else if(item.Status == 2) { <span class="badge bg-warning text-dark">In Progress</span> }
-                                else if(item.Status == 3) { <span class="badge bg-primary">Resolved</span> }
-                                else { <span class="badge bg-secondary">Closed</span> }
+                                @if(item.Status == 1) { <span class="badge bg-success">Açık</span> }
+                                else if(item.Status == 2) { <span class="badge bg-warning text-dark">İşlemde</span> }
+                                else if(item.Status == 3) { <span class="badge bg-primary">Çözüldü</span> }
+                                else { <span class="badge bg-secondary">Kapalı</span> }
                             </td>
                             <td class="text-muted">@(item.SLADueDate?.ToString("g") ?? "-")</td>
-                            <td class="text-info">@(item.AssignedTechnicianName ?? "Not Assigned")</td>
+                            <td class="text-info">@(item.AssignedTechnicianName ?? "Atanmadı")</td>
                             <td>
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info me-1">Details</a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info me-1">Detaylar</a>
                                 
                                 @* 🟡 FIX: Koşullu butonlar - duruma göre göster *@
                                 @if(item.Status == 1 && isAgent) // Open → Agent atar
                                 {
                                     <a asp-action="Assign" asp-route-id="@item.Id" class="btn btn-sm btn-primary me-1">
-                                        <i class="bi bi-person-plus"></i> Assign
+                                        <i class="bi bi-person-plus"></i> Ata
                                     </a>
                                 }
                                 
                                 @if(item.Status == 2) // InProgress → Teknisyen çözer
                                 {
                                     <a asp-action="Resolve" asp-route-id="@item.Id" class="btn btn-sm btn-success me-1">
-                                        <i class="bi bi-check-lg"></i> Resolve
+                                        <i class="bi bi-check-lg"></i> Çöz
                                     </a>
                                 }
 
@@ -74,7 +74,7 @@
                                 @if (isAgent)
                                 {
                                     <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline"
-                                          onsubmit="return confirm('Are you sure you want to delete this ticket? This cannot be undone.');">
+                                          onsubmit="return confirm('Bu kaydı silmek istediğinize emin misiniz? Bu işlem geri alınamaz.');">
                                         <button type="submit" class="btn btn-sm btn-danger">
                                             <i class="bi bi-trash"></i>
                                         </button>
@@ -86,7 +86,7 @@
                     @if(!Model.Any())
                     {
                         <tr>
-                            <td colspan="7" class="text-center text-muted py-4">No tickets found in the system.</td>
+                            <td colspan="7" class="text-center text-muted py-4">Sistemde kayıt bulunamadı.</td>
                         </tr>
                     }
                 </tbody>

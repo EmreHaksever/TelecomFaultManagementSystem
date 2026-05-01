@@ -38,7 +38,7 @@ public class TicketController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        ModelState.AddModelError(string.Empty, "Failed to create ticket.");
+        ModelState.AddModelError(string.Empty, "Talep oluşturulurken bir hata oluştu.");
         return View(model);
     }
 
@@ -66,7 +66,7 @@ public class TicketController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        ModelState.AddModelError(string.Empty, "Failed to resolve ticket.");
+        ModelState.AddModelError(string.Empty, "Talep çözülürken bir hata oluştu.");
         ViewBag.TicketId = ticketId;
         return View();
     }
@@ -88,7 +88,7 @@ public class TicketController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        ModelState.AddModelError(string.Empty, "Failed to assign technician.");
+        ModelState.AddModelError(string.Empty, "Teknisyen atanırken bir hata oluştu.");
         var technicians = await _apiService.GetTechniciansAsync();
         ViewBag.TicketId = ticketId;
         return View(technicians);

@@ -1,14 +1,14 @@
 @model Telecom.UI.Models.CreateTicketViewModel
 
 @{
-    ViewData["Title"] = "Create Ticket";
+    ViewData["Title"] = "Talep Oluştur";
 }
 
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="glass-card">
-                <h3 class="neon-text mb-4"><i class="bi bi-file-earmark-plus"></i> Open New Fault Ticket</h3>
+                <h3 class="neon-text mb-4"><i class="bi bi-file-earmark-plus"></i> Yeni Arıza Kaydı Aç</h3>
                 <hr class="border-secondary mb-4"/>
 
                 <form asp-action="Create" method="post">
@@ -16,37 +16,37 @@
 
                     <div class="row mb-3">
                         <div class="col-md-6 form-group">
-                            <label asp-for="CustomerNo" class="control-label text-light">Customer Number</label>
-                            <input asp-for="CustomerNo" class="form-control glass-input" placeholder="e.g. CUST-10001" />
+                            <label asp-for="CustomerNo" class="control-label text-light">Müşteri Numarası</label>
+                            <input asp-for="CustomerNo" class="form-control glass-input" placeholder="Örn: CUST-10001" />
                             <span asp-validation-for="CustomerNo" class="text-danger"></span>
                         </div>
                         <div class="col-md-6 form-group">
-                            <label asp-for="Priority" class="control-label text-light">Priority Level</label>
+                            <label asp-for="Priority" class="control-label text-light">Öncelik Seviyesi</label>
                             <select asp-for="Priority" class="form-select glass-input">
-                                <option value="1">Low</option>
-                                <option value="2" selected>Medium</option>
-                                <option value="3">High</option>
-                                <option value="4">Critical</option>
+                                <option value="1">Düşük</option>
+                                <option value="2" selected>Orta</option>
+                                <option value="3">Yüksek</option>
+                                <option value="4">Kritik</option>
                             </select>
                             <span asp-validation-for="Priority" class="text-danger"></span>
                         </div>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="Title" class="control-label text-light">Fault Title</label>
-                        <input asp-for="Title" class="form-control glass-input" placeholder="Brief description of the issue" />
+                        <label asp-for="Title" class="control-label text-light">Arıza Başlığı</label>
+                        <input asp-for="Title" class="form-control glass-input" placeholder="Sorunun kısa özeti" />
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-4">
-                        <label asp-for="Description" class="control-label text-light">Detailed Description</label>
-                        <textarea asp-for="Description" class="form-control glass-input" rows="4" placeholder="Provide detailed information..."></textarea>
+                        <label asp-for="Description" class="control-label text-light">Detaylı Açıklama</label>
+                        <textarea asp-for="Description" class="form-control glass-input" rows="4" placeholder="Detaylı bilgi sağlayın..."></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
                     <div class="form-group d-flex justify-content-between">
-                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
-                        <button type="submit" class="btn btn-neon px-5">Submit Ticket</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">İptal</a>
+                        <button type="submit" class="btn btn-neon px-5">Kaydı Gönder</button>
                     </div>
                 </form>
             </div>

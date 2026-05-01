@@ -1,31 +1,31 @@
 @{
-    ViewData["Title"] = "Resolve Ticket";
+    ViewData["Title"] = "Talebi Çöz";
 }
 
 <div class="container mt-5">
     <div class="glass-card p-5 animate-fade-in mx-auto" style="max-width: 700px;">
-        <h2 class="neon-text text-center mb-4"><i class="bi bi-check2-all me-2"></i>Resolve Ticket</h2>
-        <p class="text-light opacity-75 text-center mb-4">Please provide details about how you fixed this issue.</p>
+        <h2 class="neon-text text-center mb-4"><i class="bi bi-check2-all me-2"></i>Talebi Çöz</h2>
+        <p class="text-light opacity-75 text-center mb-4">Lütfen bu sorunu nasıl giderdiğinizle ilgili ayrıntıları sağlayın.</p>
         <hr class="glass-hr">
 
         <form asp-action="Resolve" method="post">
             <input type="hidden" name="ticketId" value="@ViewBag.TicketId" />
             
             <div class="mb-4">
-                <label class="form-label text-light fw-bold">Resolution Details</label>
+                <label class="form-label text-light fw-bold">Çözüm Ayrıntıları</label>
                 <textarea name="resolutionDetail" class="form-control glass-input" rows="6" 
-                          placeholder="Explain the solution (e.g., 'Replaced faulty router', 'Reset port on DSLAM')..." required></textarea>
+                          placeholder="Çözümü açıklayın (Örn: 'Arızalı yönlendirici değiştirildi', 'DSLAM üzerindeki port sıfırlandı')..." required></textarea>
                 <div class="form-text text-light opacity-50 small mt-2">
-                    This information will be visible to agents and the customer support team.
+                    Bu bilgiler temsilciler ve müşteri destek ekibi tarafından görülebilecektir.
                 </div>
             </div>
 
             <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-success btn-lg py-3">
-                    <i class="bi bi-send-check me-2"></i>Submit Resolution
+                    <i class="bi bi-send-check me-2"></i>Çözümü Gönder
                 </button>
                 <a asp-action="Index" class="btn btn-outline-light py-2 opacity-75">
-                    Go Back
+                    Geri Dön
                 </a>
             </div>
             
