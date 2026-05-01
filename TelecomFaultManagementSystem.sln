@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telecom.API", "Telecom.API\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telecom.Tests", "Telecom.Tests\Telecom.Tests.csproj", "{F5627AF1-3826-41AC-8663-148A1A60FB91}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telecom.UI", "Telecom.UI\Telecom.UI.csproj", "{77359009-C123-4E36-8E2B-2A88E474B0FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{F5627AF1-3826-41AC-8663-148A1A60FB91}.Release|x64.Build.0 = Release|Any CPU
 		{F5627AF1-3826-41AC-8663-148A1A60FB91}.Release|x86.ActiveCfg = Release|Any CPU
 		{F5627AF1-3826-41AC-8663-148A1A60FB91}.Release|x86.Build.0 = Release|Any CPU
+		{77359009-C123-4E36-8E2B-2A88E474B0FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77359009-C123-4E36-8E2B-2A88E474B0FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77359009-C123-4E36-8E2B-2A88E474B0FB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{77359009-C123-4E36-8E2B-2A88E474B0FB}.Debug|x64.Build.0 = Debug|Any CPU
+		{77359009-C123-4E36-8E2B-2A88E474B0FB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{77359009-C123-4E36-8E2B-2A88E474B0FB}.Debug|x86.Build.0 = Debug|Any CPU
+		{77359009-C123-4E36-8E2B-2A88E474B0FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77359009-C123-4E36-8E2B-2A88E474B0FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77359009-C123-4E36-8E2B-2A88E474B0FB}.Release|x64.ActiveCfg = Release|Any CPU
+		{77359009-C123-4E36-8E2B-2A88E474B0FB}.Release|x64.Build.0 = Release|Any CPU
+		{77359009-C123-4E36-8E2B-2A88E474B0FB}.Release|x86.ActiveCfg = Release|Any CPU
+		{77359009-C123-4E36-8E2B-2A88E474B0FB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

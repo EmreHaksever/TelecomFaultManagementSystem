@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-dark: #0f172a;
+  --bg-darker: #020617;
+  --glass-bg: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --neon-blue: #38bdf8;
+  --neon-purple: #c084fc;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-darker);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.15), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(192, 132, 252, 0.15), transparent 25%);
+  color: #e2e8f0;
+  min-height: 100vh;
+}
+
+/* Navbar */
+.navbar.glass-nav {
+  background: rgba(15, 23, 42, 0.8) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  color: var(--neon-blue) !important;
+  letter-spacing: 1px;
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+}
+
+/* Authentication */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px);
+}
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* Typography */
+.neon-text {
+  background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+/* Inputs */
+.glass-input {
+  background: rgba(15, 23, 42, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+}
+.glass-input:focus {
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.4) !important;
+  border-color: var(--neon-blue) !important;
+}
+
+/* Buttons */
+.btn-neon {
+  background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-neon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(192, 132, 252, 0.3);
+  color: #fff;
+}
+
+.btn-neon-outline {
+  background: transparent;
+  color: var(--neon-blue);
+  border: 1px solid var(--neon-blue);
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.5rem 1.25rem;
+  transition: all 0.3s ease;
+}
+.btn-neon-outline:hover {
+  background: rgba(56, 189, 248, 0.1);
+  color: #fff;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+}
+
+/* Tables */
+.glass-table {
+  color: #cbd5e1;
+}
+.glass-table th {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+.glass-table td {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  vertical-align: middle;
+}
+.glass-badge {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+}

@@ -1,0 +1,32 @@
+@model Telecom.UI.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="auth-container">
+    <div class="glass-card auth-card">
+        <h2 class="text-center neon-text mb-4">Telecom Fault System</h2>
+        <p class="text-center text-muted mb-4">Agent Panel Login</p>
+        
+        <form asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="control-label text-light"></label>
+                <input asp-for="Email" class="form-control glass-input" placeholder="agent@telecom.com" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group mb-4">
+                <label asp-for="Password" class="control-label text-light"></label>
+                <input asp-for="Password" type="password" class="form-control glass-input" placeholder="••••••••" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group d-grid">
+                <button type="submit" class="btn btn-neon">Access System</button>
+            </div>
+        </form>
+    </div>
+</div>
