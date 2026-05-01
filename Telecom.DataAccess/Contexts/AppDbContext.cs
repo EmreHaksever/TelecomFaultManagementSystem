@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Telecom.Domain.Entities;
 using System;
 using System.Threading;
@@ -6,13 +8,12 @@ using System.Threading.Tasks;
 
 namespace Telecom.DataAccess.Contexts;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
 
-    public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
     public DbSet<AuditLog> AuditLogs { get; set; }
 

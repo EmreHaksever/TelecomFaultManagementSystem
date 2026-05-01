@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace Telecom.Domain.Entities;
 
-public class AppUser : BaseEntity
+public class AppUser : IdentityUser<Guid>
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string Role { get; set; } = string.Empty; // "Admin", "Agent", "Technician"
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    // Email, Id, UserName vb. özellikler IdentityUser'dan miras alınır.
     
     // Kullanıcının atandığı ticket'lar
     public ICollection<Ticket> AssignedTickets { get; set; } = new List<Ticket>();
