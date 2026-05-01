@@ -89,6 +89,17 @@ public class ApiService
         var response = await _httpClient.PostAsync("api/tickets/assign", content);
         return response.IsSuccessStatusCode;
     }
+    public async Task<bool> ResolveTicketAsync(Guid ticketId, string resolutionDetail)
+    {
+        await SetAuthorizationHeaderAsync();
+        var model = new { TicketId = ticketId, Status = 3, ResolutionDetail = resolutionDetail }; // 3 = Resolved
+        var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+        var content = new StringContent(JsonSerializer.Serialize(model, options), Encoding.UTF8, "application/json");
+        
+        var response = await _httpClient.PutAsync("api/tickets/status", content);
+        return response.IsSuccessStatusCode;
+    }
+
     public async Task<TicketViewModel?> GetTicketByIdAsync(Guid id)
     {
         await SetAuthorizationHeaderAsync();

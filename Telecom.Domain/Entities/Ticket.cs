@@ -13,6 +13,7 @@ public class Ticket : BaseEntity
     public TicketStatus Status { get; set; }
     
     public DateTime? SLADueDate { get; set; }
+    public string? ResolutionDetail { get; set; }
     
     // Navigation Properties
     public Guid? AssignedTechnicianId { get; set; }

@@ -51,6 +51,27 @@ public class TicketController : Controller
     }
 
     [HttpGet]
+    public IActionResult Resolve(Guid id)
+    {
+        ViewBag.TicketId = id;
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Resolve(Guid ticketId, string resolutionDetail)
+    {
+        var success = await _apiService.ResolveTicketAsync(ticketId, resolutionDetail);
+        if (success)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        ModelState.AddModelError(string.Empty, "Failed to resolve ticket.");
+        ViewBag.TicketId = ticketId;
+        return View();
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Assign(Guid id)
     {
         var technicians = await _apiService.GetTechniciansAsync();

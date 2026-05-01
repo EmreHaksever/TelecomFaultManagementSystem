@@ -7,4 +7,5 @@ public class ChangeTicketStatusDto
 {
     public Guid TicketId { get; set; }
     public TicketStatus Status { get; set; }
+    public string? ResolutionDetail { get; set; }
 }

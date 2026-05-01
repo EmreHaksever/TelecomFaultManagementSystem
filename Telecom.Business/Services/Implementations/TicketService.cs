@@ -103,6 +103,11 @@ public class TicketService : ITicketService
         if (ticket == null) return false;
 
         ticket.Status = dto.Status;
+        if (!string.IsNullOrEmpty(dto.ResolutionDetail))
+        {
+            ticket.ResolutionDetail = dto.ResolutionDetail;
+        }
+
         _ticketRepository.Update(ticket);
 
         var auditLog = new AuditLog
@@ -110,7 +115,7 @@ public class TicketService : ITicketService
             UserId = currentUserId,
             TicketId = ticket.Id,
             ActionType = "StatusChanged",
-            Details = $"Ticket status changed to {dto.Status}."
+            Details = $"Ticket status changed to {dto.Status}. Resolution: {dto.ResolutionDetail ?? "N/A"}"
         };
         await _auditLogRepository.AddAsync(auditLog);
 

@@ -11,5 +11,6 @@ public class TicketViewModel
     public int Priority { get; set; }
     public int Status { get; set; }
     public DateTime? SLADueDate { get; set; }
+    public string? ResolutionDetail { get; set; }
     public DateTime CreatedAt { get; set; }
 }
