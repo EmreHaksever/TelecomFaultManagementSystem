@@ -15,6 +15,7 @@ public class TicketResponseDto
     // 🔴 FIX: Eksik alanlar eklendi
     public string? ResolutionDetail { get; set; }
     public Guid? AssignedTechnicianId { get; set; }
+    public string? AssignedTechnicianName { get; set; }
     public Guid? CreatedByUserId { get; set; }
     public DateTime CreatedAt { get; set; }
 }

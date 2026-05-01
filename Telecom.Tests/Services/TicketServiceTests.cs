@@ -14,7 +14,7 @@ namespace Telecom.Tests.Services;
 
 public class TicketServiceTests
 {
-    private readonly Mock<IRepository<Ticket>> _mockTicketRepo;
+    private readonly Mock<ITicketRepository> _mockTicketRepo;
     private readonly Mock<IRepository<AuditLog>> _mockAuditLogRepo;
     private readonly Mock<IUnitOfWork> _mockUnitOfWork;
     private readonly IMapper _mapper;
@@ -22,7 +22,7 @@ public class TicketServiceTests
 
     public TicketServiceTests()
     {
-        _mockTicketRepo = new Mock<IRepository<Ticket>>();
+        _mockTicketRepo = new Mock<ITicketRepository>();
         _mockAuditLogRepo = new Mock<IRepository<AuditLog>>();
         _mockUnitOfWork = new Mock<IUnitOfWork>();
 

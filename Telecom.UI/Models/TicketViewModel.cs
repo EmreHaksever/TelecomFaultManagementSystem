@@ -12,6 +12,7 @@ public class TicketViewModel
     public int Status { get; set; }
     public DateTime? SLADueDate { get; set; }
     public string? ResolutionDetail { get; set; }
+    public string? AssignedTechnicianName { get; set; }
     public Guid? CreatedByUserId { get; set; }
     public DateTime CreatedAt { get; set; }
 }

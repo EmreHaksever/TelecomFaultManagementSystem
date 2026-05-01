@@ -59,6 +59,7 @@ builder.Services.AddAuthentication(options =>
 
 // Dependency Injection (IoC)
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITicketService, TicketService>();
 

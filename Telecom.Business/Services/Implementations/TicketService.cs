@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Telecom.Business.DTOs.Ticket;
@@ -12,13 +13,13 @@ namespace Telecom.Business.Services.Implementations;
 
 public class TicketService : ITicketService
 {
-    private readonly IRepository<Ticket> _ticketRepository;
+    private readonly ITicketRepository _ticketRepository;
     private readonly IRepository<AuditLog> _auditLogRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
     public TicketService(
-        IRepository<Ticket> ticketRepository, 
+        ITicketRepository ticketRepository, 
         IRepository<AuditLog> auditLogRepository, 
         IUnitOfWork unitOfWork, 
         IMapper mapper)
@@ -55,25 +56,29 @@ public class TicketService : ITicketService
 
     public async Task<TicketResponseDto?> GetTicketByIdAsync(Guid id)
     {
-        var ticket = await _ticketRepository.GetByIdAsync(id);
+        var ticket = await _ticketRepository.GetByIdWithTechnicianAsync(id);
         if (ticket == null) return null;
-        
-        return _mapper.Map<TicketResponseDto>(ticket);
+        var dto = _mapper.Map<TicketResponseDto>(ticket);
+        if (ticket.AssignedTechnician != null)
+            dto.AssignedTechnicianName = $"{ticket.AssignedTechnician.FirstName} {ticket.AssignedTechnician.LastName}".Trim();
+        return dto;
     }
 
     public async Task<IEnumerable<TicketResponseDto>> GetAllTicketsAsync(Guid currentUserId, string role)
     {
-        var tickets = await _ticketRepository.GetAllAsync();
+        var tickets = await _ticketRepository.GetAllWithTechnicianAsync();
 
         // Teknisyen ise sadece kendisine atanan biletleri görsün
         if (role == "Technician")
-        {
-            var techTickets = tickets.Where(t => t.AssignedTechnicianId == currentUserId);
-            return _mapper.Map<IEnumerable<TicketResponseDto>>(techTickets);
-        }
+            tickets = tickets.Where(t => t.AssignedTechnicianId == currentUserId);
 
-        // Admin veya Agent ise tüm biletleri görsün
-        return _mapper.Map<IEnumerable<TicketResponseDto>>(tickets);
+        return tickets.Select(t =>
+        {
+            var dto = _mapper.Map<TicketResponseDto>(t);
+            if (t.AssignedTechnician != null)
+                dto.AssignedTechnicianName = $"{t.AssignedTechnician.FirstName} {t.AssignedTechnician.LastName}".Trim();
+            return dto;
+        }).ToList();
     }
 
     public async Task<bool> AssignTechnicianAsync(AssignTechnicianDto dto, Guid currentUserId)

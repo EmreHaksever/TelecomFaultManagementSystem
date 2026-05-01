@@ -56,6 +56,10 @@
                     <label class="text-muted small d-block">Created At</label>
                     <span class="text-muted small">@Model.CreatedAt.ToString("f")</span>
                 </div>
+                <div class="mb-4">
+                    <label class="text-muted small d-block">Assigned Technician</label>
+                    <span class="text-info fw-bold">@(Model.AssignedTechnicianName ?? "Not Assigned")</span>
+                </div>
             </div>
         </div>
 
