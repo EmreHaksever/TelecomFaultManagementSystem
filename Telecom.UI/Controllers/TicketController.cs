@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Telecom.UI.Models;
@@ -16,12 +17,6 @@ public class TicketController : Controller
 
     public async Task<IActionResult> Index()
     {
-        // Simple check to ensure user has token, otherwise redirect to login
-        if (string.IsNullOrEmpty(Request.Cookies["AuthToken"]))
-        {
-            return RedirectToAction("Login", "Auth");
-        }
-
         var tickets = await _apiService.GetTicketsAsync();
         return View(tickets);
     }
@@ -29,10 +24,6 @@ public class TicketController : Controller
     [HttpGet]
     public IActionResult Create()
     {
-        if (string.IsNullOrEmpty(Request.Cookies["AuthToken"]))
-        {
-            return RedirectToAction("Login", "Auth");
-        }
         return View();
     }
 
@@ -49,5 +40,36 @@ public class TicketController : Controller
 
         ModelState.AddModelError(string.Empty, "Failed to create ticket.");
         return View(model);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(Guid id)
+    {
+        var ticket = await _apiService.GetTicketByIdAsync(id);
+        if (ticket == null) return NotFound();
+        return View(ticket);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Assign(Guid id)
+    {
+        var technicians = await _apiService.GetTechniciansAsync();
+        ViewBag.TicketId = id;
+        return View(technicians);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Assign(Guid ticketId, Guid technicianId)
+    {
+        var success = await _apiService.AssignTechnicianAsync(ticketId, technicianId);
+        if (success)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        ModelState.AddModelError(string.Empty, "Failed to assign technician.");
+        var technicians = await _apiService.GetTechniciansAsync();
+        ViewBag.TicketId = ticketId;
+        return View(technicians);
     }
 }

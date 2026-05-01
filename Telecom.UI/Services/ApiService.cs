@@ -22,7 +22,7 @@ public class ApiService
         // Base address will be configured in Program.cs
     }
 
-    private void AddAuthorizationHeader()
+    private async Task SetAuthorizationHeaderAsync()
     {
         var token = _httpContextAccessor.HttpContext?.Request.Cookies["AuthToken"];
         if (!string.IsNullOrEmpty(token))
@@ -47,7 +47,7 @@ public class ApiService
 
     public async Task<List<TicketViewModel>> GetTicketsAsync()
     {
-        AddAuthorizationHeader();
+        await SetAuthorizationHeaderAsync();
         var response = await _httpClient.GetAsync("api/tickets");
         if (response.IsSuccessStatusCode)
         {
@@ -60,9 +60,45 @@ public class ApiService
 
     public async Task<bool> CreateTicketAsync(CreateTicketViewModel model)
     {
-        AddAuthorizationHeader();
+        await SetAuthorizationHeaderAsync();
         var content = new StringContent(JsonSerializer.Serialize(model), Encoding.UTF8, "application/json");
         var response = await _httpClient.PostAsync("api/tickets", content);
         return response.IsSuccessStatusCode;
+    }
+
+    public async Task<List<TechnicianViewModel>> GetTechniciansAsync()
+    {
+        await SetAuthorizationHeaderAsync();
+        var response = await _httpClient.GetAsync("api/auth/technicians");
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            return JsonSerializer.Deserialize<List<TechnicianViewModel>>(content, options) ?? new List<TechnicianViewModel>();
+        }
+        return new List<TechnicianViewModel>();
+    }
+
+    public async Task<bool> AssignTechnicianAsync(Guid ticketId, Guid technicianId)
+    {
+        await SetAuthorizationHeaderAsync();
+        var model = new { TicketId = ticketId, TechnicianId = technicianId };
+        var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+        var content = new StringContent(JsonSerializer.Serialize(model, options), Encoding.UTF8, "application/json");
+        
+        var response = await _httpClient.PostAsync("api/tickets/assign", content);
+        return response.IsSuccessStatusCode;
+    }
+    public async Task<TicketViewModel?> GetTicketByIdAsync(Guid id)
+    {
+        await SetAuthorizationHeaderAsync();
+        var response = await _httpClient.GetAsync($"api/tickets/{id}");
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            return JsonSerializer.Deserialize<TicketViewModel>(content, options);
+        }
+        return null;
     }
 }

@@ -111,4 +111,17 @@ public class AuthController : ControllerBase
 
         return token;
     }
+
+    [HttpGet("technicians")]
+    public async Task<IActionResult> GetTechnicians()
+    {
+        var technicians = await _userManager.GetUsersInRoleAsync("Technician");
+        var result = technicians.Select(u => new
+        {
+            u.Id,
+            FullName = $"{u.FirstName} {u.LastName}",
+            u.Email
+        });
+        return Ok(result);
+    }
 }

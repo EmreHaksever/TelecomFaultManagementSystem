@@ -1,0 +1,38 @@
+@model List<Telecom.UI.Models.TechnicianViewModel>
+@{
+    ViewData["Title"] = "Assign Technician";
+}
+
+<div class="container mt-5">
+    <div class="auth-card glass-panel p-4 animate-fade-in mx-auto" style="max-width: 600px;">
+        <h2 class="text-center mb-4"><i class="bi bi-person-gear me-2"></i>Assign Technician</h2>
+        <hr class="glass-hr">
+
+        <form asp-action="Assign" method="post">
+            <input type="hidden" name="ticketId" value="@ViewBag.TicketId" />
+            
+            <div class="mb-4">
+                <label class="form-label text-light opacity-75">Select Technician</label>
+                <select name="technicianId" class="form-select glass-input" required>
+                    <option value="">-- Choose a Technician --</option>
+                    @foreach (var tech in Model)
+                    {
+                        <option value="@tech.Id">@tech.FullName (@tech.Email)</option>
+                    }
+                </select>
+                <div class="form-text text-light opacity-50">Only personnel with the 'Technician' role are listed here.</div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn glass-button-primary py-2">
+                    <i class="bi bi-check2-circle me-2"></i>Assign Now
+                </button>
+                <a asp-action="Index" class="btn btn-outline-light py-2 opacity-75">
+                    Cancel
+                </a>
+            </div>
+            
+            <div asp-validation-summary="ModelOnly" class="text-danger mt-3 small"></div>
+        </form>
+    </div>
+</div>
