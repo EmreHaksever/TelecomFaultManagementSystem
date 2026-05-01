@@ -49,6 +49,9 @@ public class AuthController : ControllerBase
         if (!result.Succeeded)
             return StatusCode(StatusCodes.Status500InternalServerError, "User creation failed! Please check user details and try again.");
 
+        if (dto.Role.Equals("Customer", StringComparison.OrdinalIgnoreCase))
+            return BadRequest("Customers are not allowed to have system accounts. They are managed as entities only.");
+
         if (!await _roleManager.RoleExistsAsync(dto.Role))
             await _roleManager.CreateAsync(new IdentityRole<Guid>(dto.Role));
 
@@ -67,6 +70,8 @@ public class AuthController : ControllerBase
         if (user != null && await _userManager.CheckPasswordAsync(user, dto.Password))
         {
             var userRoles = await _userManager.GetRolesAsync(user);
+            if (userRoles.Contains("Customer"))
+                return Unauthorized("Customers do not have login access to this system.");
 
             var authClaims = new List<Claim>
             {
