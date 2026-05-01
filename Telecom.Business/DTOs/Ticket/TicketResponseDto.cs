@@ -12,6 +12,9 @@ public class TicketResponseDto
     public Priority Priority { get; set; }
     public TicketStatus Status { get; set; }
     public DateTime? SLADueDate { get; set; }
+    // 🔴 FIX: Eksik alanlar eklendi
+    public string? ResolutionDetail { get; set; }
     public Guid? AssignedTechnicianId { get; set; }
+    public Guid? CreatedByUserId { get; set; }
     public DateTime CreatedAt { get; set; }
 }

@@ -74,4 +74,15 @@ public class TicketsController : ControllerBase
         if (!result) return BadRequest("Status change failed. Ticket might not exist.");
         return Ok(new { Message = "Status changed successfully." });
     }
+
+    // Sadece "Admin" veya "Agent" rolündekiler bilet silebilir.
+    [Authorize(Roles = "Admin,Agent")]
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteTicket(Guid id)
+    {
+        var currentUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var result = await _ticketService.DeleteTicketAsync(id, currentUserId);
+        if (!result) return NotFound("Ticket not found.");
+        return Ok(new { Message = "Ticket deleted successfully." });
+    }
 }

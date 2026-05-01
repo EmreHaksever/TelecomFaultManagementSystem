@@ -34,15 +34,17 @@ public class TicketService : ITicketService
         var ticket = _mapper.Map<Ticket>(dto);
         ticket.Status = TicketStatus.Open;
         ticket.SLADueDate = CalculateSLA(dto.Priority);
+        // 🔴 FIX: Bileti açan Agent kayıt altına alınıyor
+        ticket.CreatedByUserId = currentUserId;
 
         await _ticketRepository.AddAsync(ticket);
 
         var auditLog = new AuditLog
         {
             UserId = currentUserId,
-            Ticket = ticket, // EF Core reference assignment is safer before SaveChanges since ID is empty
+            Ticket = ticket,
             ActionType = "TicketCreated",
-            Details = $"Ticket '{ticket.Title}' created with priority {ticket.Priority}."
+            Details = $"Ticket '{ticket.Title}' created with priority {ticket.Priority} by user {currentUserId}."
         };
         await _auditLogRepository.AddAsync(auditLog);
 
@@ -102,6 +104,10 @@ public class TicketService : ITicketService
         var ticket = await _ticketRepository.GetByIdAsync(dto.TicketId);
         if (ticket == null) return false;
 
+        // 🟡 FIX: Çözülüş bilet tekrar çözülemez veya geri alınamaz
+        if (ticket.Status == TicketStatus.Resolved && dto.Status != TicketStatus.Closed)
+            return false;
+
         ticket.Status = dto.Status;
         if (!string.IsNullOrEmpty(dto.ResolutionDetail))
         {
@@ -119,6 +125,24 @@ public class TicketService : ITicketService
         };
         await _auditLogRepository.AddAsync(auditLog);
 
+        await _unitOfWork.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> DeleteTicketAsync(Guid ticketId, Guid currentUserId)
+    {
+        var ticket = await _ticketRepository.GetByIdAsync(ticketId);
+        if (ticket == null) return false;
+
+        var auditLog = new AuditLog
+        {
+            UserId = currentUserId,
+            ActionType = "TicketDeleted",
+            Details = $"Ticket '{ticket.Title}' (ID: {ticketId}) deleted by user {currentUserId}."
+        };
+        await _auditLogRepository.AddAsync(auditLog);
+
+        _ticketRepository.Remove(ticket);
         await _unitOfWork.SaveChangesAsync();
         return true;
     }

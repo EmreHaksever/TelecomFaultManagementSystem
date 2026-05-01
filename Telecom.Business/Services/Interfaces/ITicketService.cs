@@ -12,4 +12,5 @@ public interface ITicketService
     Task<IEnumerable<TicketResponseDto>> GetAllTicketsAsync(Guid currentUserId, string role);
     Task<bool> AssignTechnicianAsync(AssignTechnicianDto dto, Guid currentUserId);
     Task<bool> ChangeStatusAsync(ChangeTicketStatusDto dto, Guid currentUserId);
+    Task<bool> DeleteTicketAsync(Guid ticketId, Guid currentUserId);
 }

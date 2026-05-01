@@ -1,6 +1,9 @@
 @model Telecom.UI.Models.TicketViewModel
 @{
     ViewData["Title"] = "Ticket Details";
+    var isResolved = Model.Status == 3;
+    var isInProgress = Model.Status == 2;
+    var isOpen = Model.Status == 1;
 }
 
 <div class="container mt-5">
@@ -8,9 +11,9 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="neon-text">Ticket Details</h2>
             <div>
-                @if(Model.Status == 1) { <span class="badge bg-success p-2 fs-6">Open</span> }
-                else if(Model.Status == 2) { <span class="badge bg-warning text-dark p-2 fs-6">In Progress</span> }
-                else if(Model.Status == 3) { <span class="badge bg-primary p-2 fs-6">Resolved</span> }
+                @if(isOpen)      { <span class="badge bg-success p-2 fs-6">Open</span> }
+                else if(isInProgress) { <span class="badge bg-warning text-dark p-2 fs-6">In Progress</span> }
+                else if(isResolved) { <span class="badge bg-primary p-2 fs-6">Resolved</span> }
                 else { <span class="badge bg-secondary p-2 fs-6">Closed</span> }
             </div>
         </div>
@@ -23,6 +26,15 @@
                 <p class="text-light opacity-75 mt-3" style="white-space: pre-line;">
                     @Model.Description
                 </p>
+
+                @* 🟡 FIX: Çözüm detayı gösteriliyor *@
+                @if (!string.IsNullOrEmpty(Model.ResolutionDetail))
+                {
+                    <div class="mt-4 p-3 rounded" style="background: rgba(25, 135, 84, 0.15); border: 1px solid rgba(25, 135, 84, 0.4);">
+                        <label class="text-success small fw-bold d-block mb-2"><i class="bi bi-check2-circle me-1"></i>Resolution Detail</label>
+                        <p class="text-light mb-0" style="white-space: pre-line;">@Model.ResolutionDetail</p>
+                    </div>
+                }
             </div>
             <div class="col-md-4 border-start border-secondary border-opacity-25 ps-4">
                 <div class="mb-4">
@@ -31,9 +43,10 @@
                 </div>
                 <div class="mb-4">
                     <label class="text-muted small d-block">Priority</label>
-                    @if(Model.Priority == 4) { <span class="badge bg-danger">Critical</span> }
-                    else if(Model.Priority == 3) { <span class="badge bg-warning text-dark">High</span> }
-                    else { <span class="badge bg-info text-dark">Medium/Low</span> }
+                    @if(Model.Priority == 4)      { <span class="badge bg-danger">Critical</span> }
+                    else if(Model.Priority == 3)  { <span class="badge bg-warning text-dark">High</span> }
+                    else if(Model.Priority == 2)  { <span class="badge bg-info text-dark">Medium</span> }
+                    else                          { <span class="badge bg-secondary">Low</span> }
                 </div>
                 <div class="mb-4">
                     <label class="text-muted small d-block">SLA Due Date</label>
@@ -47,9 +60,19 @@
         </div>
 
         <div class="mt-5 d-flex gap-3">
-            <a asp-action="Assign" asp-route-id="@Model.Id" class="btn glass-button-primary px-4">
-                <i class="bi bi-person-plus me-2"></i>Assign Technician
-            </a>
+            @* 🟡 FIX: Koşullu buton - sadece uygun durumdaki biletlerde göster *@
+            @if (isOpen)
+            {
+                <a asp-action="Assign" asp-route-id="@Model.Id" class="btn btn-primary px-4">
+                    <i class="bi bi-person-plus me-2"></i>Assign Technician
+                </a>
+            }
+            @if (isInProgress)
+            {
+                <a asp-action="Resolve" asp-route-id="@Model.Id" class="btn btn-success px-4">
+                    <i class="bi bi-check2-all me-2"></i>Mark as Resolved
+                </a>
+            }
             <a asp-action="Index" class="btn btn-outline-light px-4">
                 Back to List
             </a>

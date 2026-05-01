@@ -93,4 +93,10 @@ public class TicketController : Controller
         ViewBag.TicketId = ticketId;
         return View(technicians);
     }
+    [HttpPost]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        await _apiService.DeleteTicketAsync(id);
+        return RedirectToAction(nameof(Index));
+    }
 }

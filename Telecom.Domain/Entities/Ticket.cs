@@ -18,4 +18,8 @@ public class Ticket : BaseEntity
     // Navigation Properties
     public Guid? AssignedTechnicianId { get; set; }
     public AppUser? AssignedTechnician { get; set; }
+
+    // 🔴 FIX: Bileti sisteme giren Agent'ın kaydı
+    public Guid? CreatedByUserId { get; set; }
+    public AppUser? CreatedBy { get; set; }
 }

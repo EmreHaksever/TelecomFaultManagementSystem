@@ -32,7 +32,13 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
             entity.HasOne(t => t.AssignedTechnician)
                   .WithMany(u => u.AssignedTickets)
                   .HasForeignKey(t => t.AssignedTechnicianId)
-                  .OnDelete(DeleteBehavior.SetNull); // Teknisyen silinirse biletleri sahipsiz kalır
+                  .OnDelete(DeleteBehavior.SetNull);
+
+            // 🔴 FIX: Relation: Ticket -> CreatedBy (Agent/AppUser)
+            entity.HasOne(t => t.CreatedBy)
+                  .WithMany()
+                  .HasForeignKey(t => t.CreatedByUserId)
+                  .OnDelete(DeleteBehavior.Restrict);
         });
 
         // AuditLog Configuration

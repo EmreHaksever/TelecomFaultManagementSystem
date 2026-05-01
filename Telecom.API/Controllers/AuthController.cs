@@ -32,6 +32,10 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto dto)
     {
+        // 🔴 FIX: Customer rolü kontrolü, kullanıcı oluşturulmadan ÖNCE yapılıyor
+        if (dto.Role.Equals("Customer", StringComparison.OrdinalIgnoreCase))
+            return BadRequest("Customers are not allowed to have system accounts. They are managed as entities only.");
+
         var userExists = await _userManager.FindByEmailAsync(dto.Email);
         if (userExists != null)
             return StatusCode(StatusCodes.Status500InternalServerError, "User already exists!");
@@ -48,9 +52,6 @@ public class AuthController : ControllerBase
         var result = await _userManager.CreateAsync(user, dto.Password);
         if (!result.Succeeded)
             return StatusCode(StatusCodes.Status500InternalServerError, "User creation failed! Please check user details and try again.");
-
-        if (dto.Role.Equals("Customer", StringComparison.OrdinalIgnoreCase))
-            return BadRequest("Customers are not allowed to have system accounts. They are managed as entities only.");
 
         if (!await _roleManager.RoleExistsAsync(dto.Role))
             await _roleManager.CreateAsync(new IdentityRole<Guid>(dto.Role));
@@ -112,7 +113,9 @@ public class AuthController : ControllerBase
         return token;
     }
 
+    // 🟡 FIX: Endpoint artık authentication gerektiriyor
     [HttpGet("technicians")]
+    [Microsoft.AspNetCore.Authorization.Authorize]
     public async Task<IActionResult> GetTechnicians()
     {
         var technicians = await _userManager.GetUsersInRoleAsync("Technician");

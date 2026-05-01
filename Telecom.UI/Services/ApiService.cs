@@ -112,4 +112,10 @@ public class ApiService
         }
         return null;
     }
+    public async Task<bool> DeleteTicketAsync(Guid ticketId)
+    {
+        await SetAuthorizationHeaderAsync();
+        var response = await _httpClient.DeleteAsync($"api/tickets/{ticketId}");
+        return response.IsSuccessStatusCode;
+    }
 }
